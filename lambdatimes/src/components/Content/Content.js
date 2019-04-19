@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Tabs from './Tabs';
-import Cards from './Cards';
+import Tabs from "./Tabs";
+import Cards from "./Cards";
 
 // Importing our tab and card data. No need to change anything here.
-import { tabData, cardData } from '../../data';
+import { tabData, cardData } from "../../data";
 
 export default class Content extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: 'all',
+      selected: "all",
       tabs: [],
       cards: []
     };
@@ -18,22 +18,19 @@ export default class Content extends Component {
 
   componentDidMount() {
     this.setState({
-     tabs: tabData,
-    cards: cardData
-    })
+      tabs: tabData,
+      cards: cardData
+    });
     // Once the component has mounted, get the data and reflect that data on the state.
   }
-
   changeSelected = tab => {
     this.setState({
-              selected: tab
-})
+      selected: tab
+    });
     // this function should take in the tab and update the state with the new tab.
   };
 
-  filterCards = () => {
-    
-    /* Right now this function only returns the cards on state.
+  /* Right now this function only returns the cards on state.
       We're going to make this function more dynamic
       by using it to filter out our cards for when a tab is selcted
       
@@ -45,14 +42,17 @@ export default class Content extends Component {
           of the items from cardData. 
         - else, it should only return those cards whose 'tab' matched this.state.selected.
     */
-   
-   
-   
-    return this.state.cards;
+  filterCards = () => {
+    if (this.state.selected === "all") {
+      return this.state.cards;
+    } else {
+      let cards = this.state.cards;
+      cards = cards.filter(card => card.tab === this.state.selected);
+      return cards;
+    }
   };
 
   render() {
-    
     return (
       <div className="content-container">
         {/* 
@@ -60,11 +60,8 @@ export default class Content extends Component {
           `selectedTab` that includes the currently selected tab
           and `selectTabHandler` that includes the function to change the selected tab
         */}
-        
-        <Tabs tabs={this.state.tabs}
-         selectedTab={this.state.selected} 
-        selectTabHandler={this.changeSelected}/>
-        <Cards cards={this.filterCards()} />
+        <Tabs tabs={this.state.tabs} selectedTab={this.state.selected} selectTabHandler={this.changeSelected} />
+        <Cards cards={this.filterCards(this.cards)} />
       </div>
     );
   }
